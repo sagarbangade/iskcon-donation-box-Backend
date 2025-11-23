@@ -12,13 +12,18 @@ const jwt = require("jsonwebtoken");
  */
 
 exports.register = async (req, res) => {
-  console.log("REGISTER HIT");
-console.log("Request Body:", req.body);
-console.log("User:", req.user);
-console.log("Headers:", req.headers);
-console.log("Authorization:", req.headers.authorization);
   try {
     const { name, email, phone, password, role, areaId } = req.body;
+
+    // Required field validation
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
+    // ObjectId validation for areaId if provided
+    if (areaId && !require("mongoose").Types.ObjectId.isValid(areaId)) {
+      return res.status(400).json({ message: "Invalid areaId format" });
+    }
 
     // Check if email already exists
     const userExists = await User.findOne({ email });
@@ -45,6 +50,15 @@ console.log("Authorization:", req.headers.authorization);
       }
     }
 
+    // Verify area exists if areaId provided
+    if (areaId) {
+      const Area = require("../models/Area");
+      const area = await Area.findById(areaId);
+      if (!area) {
+        return res.status(404).json({ message: "Area not found" });
+      }
+    }
+
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -61,7 +75,14 @@ console.log("Authorization:", req.headers.authorization);
 
     res.json({
       message: "User registered successfully",
-      user,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        areaId: user.areaId,
+      },
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -74,6 +95,11 @@ console.log("Authorization:", req.headers.authorization);
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Required field validation
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
 
     // Find user
     const user = await User.findOne({ email });

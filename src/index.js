@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const areaRoutes = require("./routes/areas");
 const boxRoutes = require("./routes/boxes");
 const collectionRoutes = require("./routes/collections");
+const userRoutes = require("./routes/users");
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,7 @@ app.use("/auth", authRoutes);
 app.use("/areas", areaRoutes);
 app.use("/boxes", boxRoutes);
 app.use("/collections", collectionRoutes);
+app.use("/users", userRoutes);
 
 
 const PORT = process.env.PORT || 3000;

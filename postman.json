@@ -82,6 +82,39 @@
               "path": ["areas"]
             }
           }
+        },
+        {
+          "name": "Update Area",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Area Name\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/areas/{{areaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["areas", "{{areaId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Area",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/areas/{{areaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["areas", "{{areaId}}"]
+            }
+          }
         }
       ]
     },
@@ -104,6 +137,34 @@
               "raw": "{{baseUrl}}/boxes",
               "host": ["{{baseUrl}}"],
               "path": ["boxes"]
+            }
+          }
+        },
+        {
+          "name": "Get All Boxes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/boxes",
+              "host": ["{{baseUrl}}"],
+              "path": ["boxes"]
+            }
+          }
+        },
+        {
+          "name": "Get Box by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/boxes/{{boxId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["boxes", "{{boxId}}"]
             }
           }
         },
@@ -139,6 +200,20 @@
               "path": ["boxes", "{{boxId}}"]
             }
           }
+        },
+        {
+          "name": "Delete Box",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/boxes/{{boxId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["boxes", "{{boxId}}"]
+            }
+          }
         }
       ]
     },
@@ -165,6 +240,20 @@
           }
         },
         {
+          "name": "Get All Collections",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collections",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections"]
+            }
+          }
+        },
+        {
           "name": "Get Collections by Box",
           "request": {
             "method": "GET",
@@ -179,12 +268,31 @@
           }
         }
       ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Volunteers",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/volunteers",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "volunteers"]
+            }
+          }
+        }
+      ]
     }
   ],
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:5000"
+      "value": "http://localhost:3000"
     },
     {
       "key": "token",
