@@ -10,9 +10,18 @@ import collectionRoutes from "./routes/collections";
 import userRoutes from "./routes/users";
 
 const app: Express = express();
-app.use(cors());
-app.use(express.json());
 
+// LOCALHOST-ONLY CORS
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
+app.use(express.json({ limit: "10mb" }));
+
+// Health routes
 app.get("/ping", (_req, res) => {
   res.send("pong");
 });
@@ -21,7 +30,7 @@ app.get("/", (_req, res) => {
   res.send("Donation API Running");
 });
 
-// ROUTES
+// Main routes
 app.use("/auth", authRoutes);
 app.use("/areas", areaRoutes);
 app.use("/boxes", boxRoutes);
@@ -30,7 +39,6 @@ app.use("/users", userRoutes);
 
 const PORT: number = parseInt(process.env.PORT || "3001", 10);
 
-// Connect to database first, then start server
 const startServer = async (): Promise<void> => {
   try {
     await connectDB();
@@ -42,4 +50,3 @@ const startServer = async (): Promise<void> => {
 };
 
 startServer();
-
