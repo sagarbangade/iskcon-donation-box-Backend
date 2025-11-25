@@ -122,7 +122,7 @@
       "name": "Boxes",
       "item": [
         {
-          "name": "Create Box",
+          "name": "Create Box (Admin)",
           "request": {
             "method": "POST",
             "header": [
@@ -131,13 +131,33 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"locationName\": \"Shree Medical Store\",\n  \"caretakerName\": \"Ramesh\",\n  \"caretakerPhone\": \"9998877665\",\n  \"locationLink\": \"https://maps.app.goo.gl/abcd123\",\n  \"areaId\": \"{{areaId}}\",\n  \"assignedVolunteerId\": \"{{volunteerId}}\"\n}"
+              "raw": "{\n  \"locationName\": \"Shree Medical Store\",\n  \"caretakerName\": \"Ramesh\",\n  \"caretakerPhone\": \"9998877665\",\n  \"locationLink\": \"https://maps.app.goo.gl/abcd123\",\n  \"areaId\": \"{{areaId}}\",\n  \"assignedVolunteerId\": \"{{volunteerId}}\",\n  \"status\": \"active\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/boxes",
               "host": ["{{baseUrl}}"],
               "path": ["boxes"]
             }
+          }
+        },
+        {
+          "name": "Create Box (Volunteer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"locationName\": \"New Donation Box\",\n  \"caretakerName\": \"John Doe\",\n  \"caretakerPhone\": \"9998877665\",\n  \"locationLink\": \"https://maps.app.goo.gl/abcd123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/boxes",
+              "host": ["{{baseUrl}}"],
+              "path": ["boxes"]
+            },
+            "description": "Volunteers can create boxes. areaId and assignedVolunteerId are automatically set from the volunteer's assigned area and user ID. Status is automatically set to 'active'."
           }
         },
         {
@@ -266,12 +286,59 @@
               "path": ["collections", "box", "{{boxId}}"]
             }
           }
+        },
+        {
+          "name": "Update Collection",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 4000,\n  \"visitType\": \"collected\",\n  \"note\": \"Updated note\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/collections/{{collectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections", "{{collectionId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Collection",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collections/{{collectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections", "{{collectionId}}"]
+            }
+          }
         }
       ]
     },
     {
       "name": "Users",
       "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
         {
           "name": "Get Volunteers",
           "request": {
@@ -285,6 +352,53 @@
               "path": ["users", "volunteers"]
             }
           }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"phone\": \"8888888888\",\n  \"areaId\": \"{{areaId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
         }
       ]
     }
@@ -292,7 +406,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:3000"
+      "value": "http://localhost:3001"
     },
     {
       "key": "token",
@@ -308,6 +422,14 @@
     },
     {
       "key": "boxId",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "collectionId",
       "value": ""
     }
   ]
